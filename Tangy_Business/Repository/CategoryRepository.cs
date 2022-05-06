@@ -23,7 +23,7 @@ namespace Tangy_Business.Repository
         public CategoryDTO Create(CategoryDTO objDTO)
         {
             var obj = _mapper.Map<CategoryDTO, Category>(objDTO);
-          
+            obj.CreatedDate = DateTime.Now;
             var addedObj = _db.Categories.Add(obj);
             _db.SaveChanges();
 
@@ -32,22 +32,41 @@ namespace Tangy_Business.Repository
 
         public int Delete(int id)
         {
-            throw new NotImplementedException();
+            var obj = _db.Categories.FirstOrDefault(u => u.Id == id);
+            if (obj != null)
+            {
+                _db.Categories.Remove(obj);
+                return _db.SaveChanges();
+            }
+            return 0;
         }
 
         public CategoryDTO Get(int id)
         {
-            throw new NotImplementedException();
+            var obj = _db.Categories.FirstOrDefault(u => u.Id == id);
+            if (obj != null)
+            {
+                return _mapper.Map<Category, CategoryDTO>(obj);
+            }
+            return new CategoryDTO();
         }
 
         public IEnumerable<CategoryDTO> GetAll()
         {
-            throw new NotImplementedException();
+            return _mapper.Map<IEnumerable<Category>, IEnumerable<CategoryDTO>>(_db.Categories);
         }
 
         public CategoryDTO Update(CategoryDTO objDTO)
         {
-            throw new NotImplementedException();
+            var obj = _db.Categories.FirstOrDefault(u => u.Id == objDTO.Id);
+            if (obj != null)
+            {
+                obj.Name = objDTO.Name;
+                _db.Categories.Update(obj);
+                _db.SaveChanges();
+                return _mapper.Map<Category, CategoryDTO>(obj);
+            }
+            return objDTO;
         }
     }
 }
