@@ -6,7 +6,7 @@
         toastr.error(message, "Operation Failed", { timeOut: 5000 });
     }
 }
-// blazored has toastr
+
 window.ShowSwal = (type, message) => {
     if (type === "success") {
         Swal.fire(
